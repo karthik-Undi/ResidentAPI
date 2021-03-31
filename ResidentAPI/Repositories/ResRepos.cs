@@ -43,9 +43,9 @@ namespace ResidentAPI.Repositories
                     ResidentHouseNo = item.ResidentHouseNo,
                     ResidentMobileNo = item.ResidentMobileNo,
                     ResidentPassword = item.ResidentPassword,
-                    ResidentType = item.ResidentType, 
-                    ResidentWallet = item.ResidentWallet,
-                    IsApproved = item.IsApproved
+                    ResidentType = item.ResidentType,
+                    ResidentWallet = 0,
+                    IsApproved = "notApproved"
                 };
                 await _context.Residents.AddAsync(resident);
                 await _context.SaveChangesAsync();
