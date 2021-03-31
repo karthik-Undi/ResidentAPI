@@ -22,37 +22,50 @@ namespace ResidentAPI.Controllers
         [HttpGet]
         public IEnumerable<Residents> GetAllResidents()
         {
-            _log4net.Info("Get All Residents is Called !!");
+            _log4net.Info("Get All Residents Was Called !!");
             return _context.GetAllResidents();
         }
         [HttpGet("{id}")]
         public IActionResult GetResidentById(int id)
         {
-            _log4net.Info("Get Resident By ID is Called !!");
+            _log4net.Info("Get Resident By ID Was Called !!");
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            var resident = _context.GetResidentById(id);
-            _log4net.Info("Resident of Id " + id + " was called");
-            if (resident == null)
+            try
             {
-                return NotFound();
+                var resident = _context.GetResidentById(id);
+                _log4net.Info("Resident Of Id " + id + " Was Called");
+                if (resident == null)
+                {
+                    return NotFound();
+                }
+                return Ok(resident);
             }
-            return Ok(resident);
+            catch(Exception)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> PostResidents(Residents item)
         {
-            _log4net.Info("Post Residents is called !!");
+            _log4net.Info("Post Residents Was Called !!");
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var addResident = await _context.PostResidents(item);
-            return Ok(addResident);
+            try
+            {
+                var addResident = await _context.PostResidents(item);
+                return Ok(addResident);
+            }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }
