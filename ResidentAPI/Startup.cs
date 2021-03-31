@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ResidentAPI.Models;
 
+using ResidentAPI.Repositories;
+
 namespace ResidentAPI
 {
     public class Startup
@@ -35,6 +37,7 @@ namespace ResidentAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Resident API", Version = "v1" });
             });
+            services.AddTransient<IResRepos,ResRepos>();
             services.AddControllers();
         }
 
