@@ -6,6 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using ResidentAPI.Models;
 using ResidentAPI.Repositories;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace ResidentAPI.Controllers
 {
@@ -60,6 +63,22 @@ namespace ResidentAPI.Controllers
             try
             {
                 var addResident = await _context.PostResidents(item);
+                using (var httpClient = new HttpClient())
+                {
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
+                    try
+                    {
+                        using (var response = await httpClient.PostAsync("http://localhost:26408/api/House/UpdateIsFreeHouse", content))
+                        {
+
+                            _log4net.Info("Resident House No " + item.ResidentHouseNo + " Was Sent To House API !!");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        return BadRequest();
+                    }
+                }
                 return Ok(addResident);
             }
             catch(Exception)
