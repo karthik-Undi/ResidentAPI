@@ -91,10 +91,10 @@ namespace ResidentAPI.Repositories
             var tables = new OneForAll
             {
                 visitors = _context.Visitors.Where(t => t.ResidentId == id).ToList(),
-                services = _context.Services.Where(t => t.ResidentId == id).ToList(),
-                friendsAndFamily = _context.FriendsAndFamily.Where(t => t.ResidentId == id).ToList(),
-                DashboardPosts = _context.DashBoardPosts.Where(t => t.ResidentId == id).ToList(),
-                complaints = _context.Complaints.Where(t => t.ResidentId == id).ToList(),
+                //services = _context.Services.Where(t => t.ResidentId == id).ToList(),
+                //friendsAndFamily = _context.FriendsAndFamily.Where(t => t.ResidentId == id).ToList(),
+                //DashboardPosts = _context.DashBoardPosts.Where(t => t.ResidentId == id).ToList(),
+                complaints = _context.Complaints.Where(t => t.ResidentId == id && t.ComplaintStatus=="Unresolved").ToList(),
                 payments = _context.Payments.Where(t => t.ResidentId == id && t.PaymentStatus == "Requested").ToList()
             };
             return tables;
