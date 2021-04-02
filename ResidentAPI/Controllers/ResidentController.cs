@@ -86,5 +86,35 @@ namespace ResidentAPI.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpGet("AtAGlance/{id}")]
+        public IActionResult GetResidentAtAGlance(int id)
+        {
+            _log4net.Info("Get Resident By ID Was Called !!");
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var all = _context.GetResidentAtAGlance(id);
+                _log4net.Info("Resident Of Id " + id + " Was Called");
+                if (all == null)
+                {
+                    return NotFound();
+                }
+                return Ok(all);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+
+
+
+
+
     }
 }

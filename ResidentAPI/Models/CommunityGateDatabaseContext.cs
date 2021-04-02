@@ -68,9 +68,7 @@ namespace ResidentAPI.Models
 
                 entity.Property(e => e.DashItemId).HasColumnName("DashItemID");
 
-                entity.Property(e => e.DashBody)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.DashBody).IsUnicode(false);
 
                 entity.Property(e => e.DashIntendedFor)
                     .HasMaxLength(50)
@@ -87,6 +85,10 @@ namespace ResidentAPI.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.ResidentId).HasColumnName("ResidentID");
+
+                entity.Property(e => e.ResidentName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.Resident)
                     .WithMany(p => p.DashBoardPosts)

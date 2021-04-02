@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CommunityGateClient.Models.ViewModels;
 using ResidentAPI.Models;
 
 namespace ResidentAPI.Repositories
@@ -13,5 +14,6 @@ namespace ResidentAPI.Repositories
         Task<Residents> PostResidents(Residents item);
         Task<Residents> RemoveResident(int id);
         Task<Residents> UpdateResidents(Residents item, int id);
+        public OneForAll GetResidentAtAGlance(int id);
     }
 }

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CommunityGateClient.Models.ViewModels;
 using ResidentAPI.Models;
+using ResidentAPI.Models.ViewModel;
 namespace ResidentAPI.Repositories
 {
     public class ResRepos:IResRepos
@@ -82,6 +84,20 @@ namespace ResidentAPI.Repositories
             await _context.SaveChangesAsync();
 
             return resident;
+        }
+
+        public OneForAll GetResidentAtAGlance(int id)
+        {
+            var tables = new OneForAll
+            {
+                visitors = _context.Visitors.Where(t => t.ResidentId == id).ToList(),
+                services = _context.Services.Where(t => t.ResidentId == id).ToList(),
+                friendsAndFamily = _context.FriendsAndFamily.Where(t => t.ResidentId == id).ToList(),
+                DashboardPosts = _context.DashBoardPosts.Where(t => t.ResidentId == id).ToList(),
+                complaints = _context.Complaints.Where(t => t.ResidentId == id).ToList(),
+                payments = _context.Payments.Where(t => t.ResidentId == id && t.PaymentStatus == "Requested").ToList()
+            };
+            return tables;
         }
 
     }
