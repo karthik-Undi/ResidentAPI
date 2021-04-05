@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using CommunityGateClient.Models.ViewModels;
 using ResidentAPI.Models;
@@ -86,19 +87,16 @@ namespace ResidentAPI.Repositories
             return resident;
         }
 
-        public OneForAll GetResidentAtAGlance(int id)
+        public OneForAll GetResidentAtAGlance(List<VisitorsViewModel> visitor,List<ComplaintsViewModel> complaint, List<PaymentsViewModel> payment)
         {
-            var tables = new OneForAll
-            {
-                visitors = _context.Visitors.Where(t => t.ResidentId == id).ToList(),
-                //services = _context.Services.Where(t => t.ResidentId == id).ToList(),
-                //friendsAndFamily = _context.FriendsAndFamily.Where(t => t.ResidentId == id).ToList(),
-                //DashboardPosts = _context.DashBoardPosts.Where(t => t.ResidentId == id).ToList(),
-                complaints = _context.Complaints.Where(t => t.ResidentId == id && t.ComplaintStatus=="Unresolved").ToList(),
-                payments = _context.Payments.Where(t => t.ResidentId == id && t.PaymentStatus == "Requested").ToList()
-            };
-            return tables;
+                var tables = new OneForAll
+                {
+                    visitors = visitor,
+                    complaints = complaint,
+                    payments = payment
+                };
+                return tables;
+            }
         }
 
     }
-}

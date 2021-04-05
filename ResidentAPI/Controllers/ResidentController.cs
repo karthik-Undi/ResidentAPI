@@ -9,6 +9,8 @@ using ResidentAPI.Repositories;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
+using System.Net.Http.Headers;
+using ResidentAPI.Models.ViewModel;
 
 namespace ResidentAPI.Controllers
 {
@@ -18,6 +20,10 @@ namespace ResidentAPI.Controllers
     {
         static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(ResidentController));
         private readonly IResRepos _context;
+        string BaseurlForVisitorAPI = "https://localhost:44301/";
+        string BaseUrlForComplaintsAPI = "http://localhost:63429/";
+        string BaseUrlForPaymentsAPI = "http://localhost:27340/";
+
         public ResidentController(IResRepos context)
         {
             _context = context;
@@ -88,8 +94,11 @@ namespace ResidentAPI.Controllers
         }
 
         [HttpGet("AtAGlance/{id}")]
-        public IActionResult GetResidentAtAGlance(int id)
+        public async Task<IActionResult> GetResidentAtAGlance(int id)
         {
+            List<VisitorsViewModel> visitors = new List<VisitorsViewModel>();
+            List<ComplaintsViewModel> complaints = new List<ComplaintsViewModel>();
+            List<PaymentsViewModel> payments = new List<PaymentsViewModel>();
             _log4net.Info("Get Resident By ID Was Called !!");
             if (!ModelState.IsValid)
             {
@@ -97,10 +106,47 @@ namespace ResidentAPI.Controllers
             }
             try
             {
-                var all = _context.GetResidentAtAGlance(id);
+                using(var clientForVisitors = new HttpClient())
+                {
+                    clientForVisitors.BaseAddress = new Uri(BaseurlForVisitorAPI);
+                    clientForVisitors.DefaultRequestHeaders.Clear();
+                    clientForVisitors.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage Res = await clientForVisitors.GetAsync("/api/Visitor/" + id);
+                    if (Res.IsSuccessStatusCode)
+                    {
+                        var Response = Res.Content.ReadAsStringAsync().Result;
+                        visitors = JsonConvert.DeserializeObject<List<VisitorsViewModel>>(Response);
+                    }
+                }
+                using (var clientForComplaints = new HttpClient())
+                {
+                    clientForComplaints.BaseAddress = new Uri(BaseUrlForComplaintsAPI);
+                    clientForComplaints.DefaultRequestHeaders.Clear();
+                    clientForComplaints.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage Res = await clientForComplaints.GetAsync("/api/Complaints/GetComplaintByResidentId/" + id);
+                    if (Res.IsSuccessStatusCode)
+                    {
+                        var Response = Res.Content.ReadAsStringAsync().Result;
+                        complaints = JsonConvert.DeserializeObject<List<ComplaintsViewModel>>(Response);
+                    }
+                }
+                using (var clientForPayments = new HttpClient())
+                {
+                    clientForPayments.BaseAddress = new Uri(BaseUrlForPaymentsAPI);
+                    clientForPayments.DefaultRequestHeaders.Clear();
+                    clientForPayments.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage Res = await clientForPayments.GetAsync("/api/Payments/GetPaymentsByRedsidentId/" + id);
+                    if (Res.IsSuccessStatusCode)
+                    {
+                        var Response = Res.Content.ReadAsStringAsync().Result;
+                        payments = JsonConvert.DeserializeObject<List<PaymentsViewModel>>(Response);
+                    }
+                }
+
+                var all = _context.GetResidentAtAGlance(visitors,complaints,payments);
                 _log4net.Info("Resident Of Id " + id + " Was Called");
                 if (all == null)
-                {
+                {   
                     return NotFound();
                 }
                 return Ok(all);
