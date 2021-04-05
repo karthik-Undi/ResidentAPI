@@ -21,7 +21,7 @@ namespace ResidentAPI.Controllers
         static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(ResidentController));
         private readonly IResRepos _context;
         string BaseurlForVisitorAPI = "https://localhost:44301/";
-        string BaseUrlForComplaintsAPI = "http://localhost:63429/";
+        string BaseUrlForComplaintsAPI = "http://localhost:36224/";
         string BaseUrlForPaymentsAPI = "http://localhost:27340/";
 
         public ResidentController(IResRepos context)
