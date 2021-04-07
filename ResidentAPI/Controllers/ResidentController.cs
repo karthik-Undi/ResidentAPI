@@ -92,6 +92,26 @@ namespace ResidentAPI.Controllers
                 return BadRequest();
             }
         }
+        
+        [HttpPost("{id}")]
+        public async Task<IActionResult> UpdateResidentWallet(int id, Residents item)
+        {
+            _log4net.Info("Update Resiednt Wallert For Resident With Id " + id + " Was Called !!");
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                int wallet = Convert.ToInt32(item.ResidentWallet);
+                var updateWallet = await _context.UpdateResidentWallet(id, wallet);
+                return Ok(updateWallet);
+            }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
+        }
 
         [HttpGet("AtAGlance/{id}")]
         public async Task<IActionResult> GetResidentAtAGlance(int id)

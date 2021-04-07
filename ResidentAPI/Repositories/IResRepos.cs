@@ -16,5 +16,6 @@ namespace ResidentAPI.Repositories
         Task<Residents> RemoveResident(int id);
         Task<Residents> UpdateResidents(Residents item, int id);
         public OneForAll GetResidentAtAGlance(List<VisitorsViewModel> visitor, List<ComplaintsViewModel> complaint, List<PaymentsViewModel> payment);
+        Task<Residents> UpdateResidentWallet(int id, int item);
     }
 }

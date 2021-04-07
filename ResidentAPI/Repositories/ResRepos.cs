@@ -8,7 +8,7 @@ using ResidentAPI.Models;
 using ResidentAPI.Models.ViewModel;
 namespace ResidentAPI.Repositories
 {
-    public class ResRepos:IResRepos
+    public class ResRepos : IResRepos
     {
         private readonly CommunityGateDatabaseContext _context;
 
@@ -40,7 +40,8 @@ namespace ResidentAPI.Repositories
             }
             else
             {
-                resident = new Residents() {
+                resident = new Residents()
+                {
                     ResidentName = item.ResidentName,
                     ResidentEmail = item.ResidentEmail,
                     ResidentHouseNo = item.ResidentHouseNo,
@@ -87,16 +88,23 @@ namespace ResidentAPI.Repositories
             return resident;
         }
 
-        public OneForAll GetResidentAtAGlance(List<VisitorsViewModel> visitor,List<ComplaintsViewModel> complaint, List<PaymentsViewModel> payment)
+        public OneForAll GetResidentAtAGlance(List<VisitorsViewModel> visitor, List<ComplaintsViewModel> complaint, List<PaymentsViewModel> payment)
         {
-                var tables = new OneForAll
-                {
-                    visitors = visitor,
-                    complaints = complaint,
-                    payments = payment
-                };
-                return tables;
-            }
+            var tables = new OneForAll
+            {
+                visitors = visitor,
+                complaints = complaint,
+                payments = payment
+            };
+            return tables;
         }
-
+        public async Task<Residents> UpdateResidentWallet(int id, int item)
+        {
+            Residents resident = await _context.Residents.FindAsync(id);
+            resident.ResidentWallet = item;
+            await _context.SaveChangesAsync();
+            return resident;
+        }
     }
+
+}
