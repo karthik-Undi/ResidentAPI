@@ -72,17 +72,10 @@ namespace ResidentAPI.Repositories
             return resident;
         }
 
-        public async Task<Residents> UpdateResidents(Residents item, int id)
+        public async Task<Residents> ApproveResident(int id)
         {
             Residents resident = await _context.Residents.FindAsync(id);
-            resident.ResidentName = item.ResidentName;
-            resident.ResidentEmail = item.ResidentEmail;
-            resident.ResidentType = item.ResidentType;
-            resident.ResidentMobileNo = item.ResidentMobileNo;
-            resident.ResidentPassword = item.ResidentPassword;
-            resident.ResidentHouseNo = item.ResidentHouseNo;
-            resident.ResidentWallet = item.ResidentWallet;
-            resident.IsApproved = item.IsApproved;
+            resident.IsApproved = "Approved";
             await _context.SaveChangesAsync();
 
             return resident;

@@ -178,7 +178,24 @@ namespace ResidentAPI.Controllers
         }
 
 
-
+        [HttpPost("ApproveResident/{id}")]
+        public async Task<IActionResult> ApproveResident(int id,Residents r)
+        {
+            _log4net.Info("Update Resiednt Wallert For Resident With Id " + id + " Was Called !!");
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var ApprovedResident = await _context.ApproveResident(id);
+                return Ok(ApprovedResident);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
 
 
 

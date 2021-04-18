@@ -14,7 +14,7 @@ namespace ResidentAPI.Repositories
         Residents GetResidentById(int id);
         Task<Residents> PostResidents(Residents item);
         Task<Residents> RemoveResident(int id);
-        Task<Residents> UpdateResidents(Residents item, int id);
+        Task<Residents> ApproveResident(int id);
         public OneForAll GetResidentAtAGlance(List<VisitorsViewModel> visitor, List<ComplaintsViewModel> complaint, List<PaymentsViewModel> payment);
         Task<Residents> UpdateResidentWallet(int id, int item);
     }
