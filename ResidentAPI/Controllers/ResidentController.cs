@@ -58,6 +58,30 @@ namespace ResidentAPI.Controllers
             }
         }
 
+        [HttpGet("GetResidentByMail/{mail}")]
+        public IActionResult GetResidentByMail(string mail)
+        {
+            _log4net.Info("Get Resident By mail Was Called !!");
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var resident = _context.GetResidentByMail(mail);
+                _log4net.Info("Resident Of mail " + mail + " Was Called");
+                if (resident == null)
+                {
+                    return NotFound();
+                }
+                return Ok(resident);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostResidents(Residents item)
         {

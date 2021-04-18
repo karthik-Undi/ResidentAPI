@@ -12,6 +12,7 @@ namespace ResidentAPI.Repositories
     {
         IEnumerable<Residents> GetAllResidents();
         Residents GetResidentById(int id);
+        Residents GetResidentByMail(string mail);
         Task<Residents> PostResidents(Residents item);
         Task<Residents> RemoveResident(int id);
         Task<Residents> ApproveResident(int id);

@@ -31,6 +31,12 @@ namespace ResidentAPI.Repositories
             return item;
         }
 
+        public Residents GetResidentByMail(string mail)
+        {
+            Residents item = _context.Residents.Single(res => res.ResidentEmail == mail);
+            return item;
+        }
+
         public async Task<Residents> PostResidents(Residents item)
         {
             Residents resident = null;
